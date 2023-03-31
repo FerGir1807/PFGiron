@@ -1,0 +1,34 @@
+<h1 appTamanoLetraTitulo>Lista de alumnos</h1>
+<div *ngIf="alumnos.length == 0">
+    <h4>No existen alumnos registrados, favor de agregar.</h4>
+</div>
+<div *ngIf="cursos.length == 0">
+    <h4>No existen cursos registrados, favor de agregar.</h4>
+</div>
+<table mat-table [dataSource]="dataSource" *ngIf="inscripciones.length > 0">
+    <ng-container matColumnDef="nombreCompleto">
+        <th mat-header-cell *matHeaderCellDef="">Nombre Completo</th>
+        <td mat-cell *matCellDef="let inscripcion">{{inscripcion.nombreAlumno}}</td>
+    </ng-container>
+    <ng-container matColumnDef="cursosInscrito">
+        <th mat-header-cell *matHeaderCellDef=""> Cursos inscrito</th>
+        <td mat-cell *matCellDef="let inscripcion">            
+            <mat-list>
+                <mat-list-item *ngFor="let curso of inscripcion.cursosInscrito">
+                    <mat-list-item>{{curso.nombre}}</mat-list-item>
+                </mat-list-item>
+              </mat-list>
+        </td>
+    </ng-container>
+    <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef="">Acciones</th>
+        <td mat-cell *matCellDef="let inscripcion">
+            <button mat-icon-button color="primary" (click)="editarInscripcion(inscripcion)">
+                <mat-icon>edit</mat-icon>
+            </button>
+        </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+    <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+</table>
+<router-outlet></router-outlet>

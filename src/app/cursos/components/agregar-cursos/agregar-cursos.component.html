@@ -1,0 +1,75 @@
+<h1>Agregar Cursos</h1>
+<div mat-dialog-content>
+    <form [formGroup]="formularioAgregarCurso" class="example-form">
+        <div class="row">
+            <div class="col">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Nombre</mat-label>
+                    <input type="text" matInput [formControl]="controlers.nombre">
+                    <mat-error *ngIf="controlers.nombre.errors?.['required'] && controlers.nombre.dirty">
+                        El nombre es requerido.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Cupo</mat-label>
+                    <input type="number" matInput [formControl]="controlers.cupo">
+                    <mat-error *ngIf="controlers.cupo.errors?.['min'] && controlers.cupo.dirty">
+                        No puede ser menor que cero.
+                    </mat-error>
+                    <mat-error *ngIf="controlers.cupo.errors?.['max'] && controlers.cupo.dirty">
+                        No puede ser mayor a 50.
+                    </mat-error>
+                    <mat-error *ngIf="controlers.cupo.errors?.['required'] && controlers.cupo.dirty">
+                        El cupo es requerido.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col">
+                <mat-form-field appearance="fill">
+                    <mat-label>Selecciona el profesor</mat-label>
+                    <mat-select [formControl]="controlers.profesor">
+                        <mat-option *ngFor="let profesor of profesores" [value]="profesor.id">
+                            {{profesor | nombreProfesor}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="controlers.profesor.errors?.['required'] && controlers.profesor.dirty">
+                        El profesor es requerido.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col">
+                <mat-form-field appearance="fill">
+                    <mat-label>Selecciona las fechas</mat-label>
+                    <mat-date-range-input [rangePicker]="picker">
+                        <input matStartDate [formControl]="controlers.fechaInicio" placeholder="Inicio">
+                        <input matEndDate [formControl]="controlers.fechaFin" placeholder="Fin">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+                    <mat-error *ngIf="controlers.fechaInicio.errors?.['matStartDateInvalid']">Fecha de inicio
+                        inválida.</mat-error>
+                    <mat-error *ngIf="controlers.fechaInicio.errors?.['matDatepickerParse']">Formato
+                        incorrecto.</mat-error>
+                    <mat-error *ngIf="controlers.fechaFin.errors?.['matEndDateInvalid']">Fecha fin
+                        inválida.</mat-error>
+                    <mat-error *ngIf="controlers.fechaFin.errors?.['matDatepickerParse']">Formato
+                        incorrecto.</mat-error>
+                </mat-form-field>
+            </div>
+            <section class="example-section">
+                <mat-slide-toggle class="example-margin" color="primary" [formControl]="controlers.estatus">
+                    Estatus del curso
+                </mat-slide-toggle>
+            </section>
+        </div>
+
+    </form>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary" [disabled]="false" (click)="agregarCurso()"
+            [disabled]="formularioAgregarCurso.invalid" #btnAgregarCurso>Guardar</button>
+        <button mat-raised-button color="warn" (click)="formularioAgregarCurso.reset()">Reset</button>
+    </div>
+
+</div>

@@ -1,0 +1,25 @@
+<h2 mat-dialog-title>Editar inscripción a cursos</h2>
+<mat-dialog-content class="mat-typography">
+    <div cdkDropListGroup>
+        <div class="example-container">
+            <h2>Cursos disponibles</h2>
+
+            <div cdkDropList [cdkDropListData]="cursosDisponibles" class="example-list"
+                (cdkDropListDropped)="drop($event)">
+                <div class="example-box" *ngFor="let item of cursosDisponibles" cdkDrag>{{item.nombre}}</div>
+            </div>
+        </div>
+
+        <div class="example-container">
+            <h2>Cursos a inscribir</h2>
+            <div cdkDropList [cdkDropListData]="cursosInscrito" class="example-list"
+                (cdkDropListDropped)="drop($event)">
+                <div class="example-box" *ngFor="let item of cursosInscrito" cdkDrag>{{item.nombre}}</div>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancelar</button>
+    <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="editarInscripcion()">Guardar</button>
+</mat-dialog-actions>

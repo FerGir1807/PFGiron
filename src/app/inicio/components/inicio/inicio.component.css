@@ -1,0 +1,10 @@
+.inicio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.inicio img {
+    opacity: 0.5;
+}

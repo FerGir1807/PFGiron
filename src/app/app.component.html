@@ -1,0 +1,100 @@
+<ng-container>
+    <mat-toolbar color="primary">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-11">
+                    <h1>Administrador de escuela</h1>
+                </div>
+                <div class="col-lg-1">
+                    <button mat-button routerLink="login" *ngIf="botonLogin">
+                        Login
+                        <mat-icon>login</mat-icon>
+                    </button>
+                    <h3 *ngIf="!botonLogin">Hola {{nombre}}</h3>
+                    <button mat-button routerLink="login" *ngIf="!botonLogin" (click)="logout()">
+                        Logout
+                        <mat-icon>logout</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </mat-toolbar>
+    <mat-sidenav-container class="example-container">
+        <mat-sidenav #sidenav [mode]="mode.value || 'push'">
+            <button mat-button (click)="sidenav.toggle()">
+                <mat-icon>arrow_forward_ios</mat-icon>
+            </button>
+            <mat-divider></mat-divider>
+            <button mat-button [matMenuTriggerFor]="opciones" *ngIf="opcionesAdmin|| opcionesUser">Menú</button>
+            <mat-menu #opciones="matMenu">
+                <button mat-menu-item [matMenuTriggerFor]="alumnos">Alumnos</button>
+                <button mat-menu-item [matMenuTriggerFor]="cursos">Cursos</button>
+                <button mat-menu-item [matMenuTriggerFor]="profesores">Profesores</button>
+                <button mat-menu-item [matMenuTriggerFor]="inscripciones">Inscripciones</button>
+                <button mat-menu-item [matMenuTriggerFor]="usuarios" *ngIf="opcionesAdmin">Usuarios</button>
+            </mat-menu>
+
+            <mat-menu #alumnos="matMenu">
+                <button mat-menu-item routerLink="alumnos/listaAlumnos" *ngIf="opcionesAdmin|| opcionesUser"
+                    (click)="sidenav.toggle()">
+                    <mat-icon>view_list</mat-icon>
+                    Lista de alumnos
+                </button>
+                <button mat-menu-item routerLink="alumnos/agregarAlumnos" *ngIf="opcionesAdmin && opcionesUser"
+                    (click)="sidenav.toggle()">
+                    <mat-icon>person_add</mat-icon>
+                    Agregar alumnos
+                </button>
+            </mat-menu>
+            <mat-menu #cursos="matMenu">
+                <button mat-menu-item routerLink="cursos/listaCursos" *ngIf="opcionesAdmin || opcionesUser"
+                    (click)="sidenav.toggle()">
+                    <mat-icon>view_list</mat-icon>
+                    Lista de cursos
+                </button>
+                <button mat-menu-item routerLink="cursos/agregarCursos" *ngIf="opcionesAdmin"
+                    (click)="sidenav.toggle()">
+                    <mat-icon>post_add</mat-icon>
+                    Agregar cursos
+                </button>
+            </mat-menu>
+            <mat-menu #profesores="matMenu">
+                <button mat-menu-item routerLink="profesores/listaProfesores" *ngIf="opcionesAdmin || opcionesUser"
+                    (click)="sidenav.toggle()">
+                    <mat-icon>view_list</mat-icon>
+                    Lista de profesores
+                </button>
+                <button mat-menu-item routerLink="profesores/agregarProfesor" *ngIf="opcionesAdmin"
+                    (click)="sidenav.toggle()">
+                    <mat-icon>person_add</mat-icon>
+                    Agregar profesores
+                </button>
+            </mat-menu>
+            <mat-menu #inscripciones="matMenu">
+                <button mat-menu-item routerLink="inscripciones/inscripcionAlumno" *ngIf="opcionesAdmin || opcionesUser"
+                    (click)="sidenav.toggle()">
+                    <mat-icon>view_list</mat-icon>
+                    Lista de inscripciones
+                </button>
+            </mat-menu>
+            <mat-menu #usuarios="matMenu">
+                <button mat-menu-item routerLink="usuarios/listaUsuarios" (click)="sidenav.toggle()">
+                    <mat-icon>view_list</mat-icon>
+                    Lista de usuarios
+                </button>
+                <button mat-menu-item routerLink="usuarios/agregarUsuarios" (click)="sidenav.toggle()">
+                    <mat-icon>person_add</mat-icon>
+                    Agregar usuarios
+                </button>
+            </mat-menu>
+        </mat-sidenav>
+
+        <mat-sidenav-content>
+            <p><button mat-button (click)="sidenav.toggle()">
+                    <mat-icon>arrow_back_ios</mat-icon>
+                </button></p>
+            <router-outlet></router-outlet>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+    <mat-toolbar class="example-footer" color="primary">Footer</mat-toolbar>
+</ng-container>
