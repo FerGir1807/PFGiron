@@ -1,4 +1,4 @@
-<h1 appTamanoLetraTitulo>Lista de alumnos</h1>
+<h1 appTamanoLetraTitulo>Lista de Inscripciones</h1>
 <div *ngIf="alumnos.length == 0">
     <h4>No existen alumnos registrados, favor de agregar.</h4>
 </div>
@@ -12,12 +12,12 @@
     </ng-container>
     <ng-container matColumnDef="cursosInscrito">
         <th mat-header-cell *matHeaderCellDef=""> Cursos inscrito</th>
-        <td mat-cell *matCellDef="let inscripcion">            
+        <td mat-cell *matCellDef="let inscripcion">
             <mat-list>
                 <mat-list-item *ngFor="let curso of inscripcion.cursosInscrito">
                     <mat-list-item>{{curso.nombre}}</mat-list-item>
                 </mat-list-item>
-              </mat-list>
+            </mat-list>
         </td>
     </ng-container>
     <ng-container matColumnDef="acciones">

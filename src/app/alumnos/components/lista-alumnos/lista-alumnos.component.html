@@ -20,7 +20,7 @@
         <th mat-header-cell *matHeaderCellDef="">Estatus</th>
         <td mat-cell *matCellDef="let alumno">
             <div [appEstatus]="alumno.estatus">
-                {{alumno.estatus}}
+                {{alumno.estatus?"Activo":"Inactivo"}}
             </div>
         </td>
     </ng-container>
