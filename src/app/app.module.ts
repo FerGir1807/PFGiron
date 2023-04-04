@@ -17,6 +17,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { LoginModule } from './core/components/login/login.module';
+import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { LoginModule } from './core/components/login/login.module';
     MatDividerModule,
     LoginModule,
     StoreModule.forRoot({}, {}),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() })
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
+    EffectsModule.forRoot([])
   ],
   exports: [
     MatSidenavModule,

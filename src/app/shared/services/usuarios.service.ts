@@ -25,7 +25,7 @@ export class UsuariosService {
     return this.http.put<Usuario>(`${env.apiUrl}usuarios/${usuario.id}`, usuario);
   }
 
-  eliminarUsuario(idUsuario: string): Observable<Usuario> {
+  eliminarUsuario(idUsuario: String): Observable<Usuario> {
     return this.http.delete<Usuario>(`${env.apiUrl}usuarios/${idUsuario}`);
   }
 

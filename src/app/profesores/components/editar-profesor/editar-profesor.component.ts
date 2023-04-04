@@ -5,6 +5,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Profesor } from 'src/app/models/profesor';
 import { RegistroCorrectoComponent } from 'src/app/shared/components/registro-correcto/registro-correcto.component';
 import { ProfesoresService } from 'src/app/shared/services/profesores.service';
+import { ProfesorState } from '../../state/profesores-state.reducer';
+import { Store } from '@ngrx/store';
+import { editarProfesorState } from '../../state/profesores-state.actions';
 
 @Component({
   selector: 'app-editar-profesor',
@@ -20,7 +23,9 @@ export class EditarProfesorComponent {
 
     private dialogRef: MatDialogRef<EditarProfesorComponent>,
 
-    @Inject(MAT_DIALOG_DATA) public data: Profesor, private profesorService: ProfesoresService, private _snackBar: MatSnackBar) {
+    @Inject(MAT_DIALOG_DATA) public data: Profesor,
+    private store: Store<ProfesorState>,
+    private _snackBar: MatSnackBar) {
     let regEx: string = "^[a-zA-Z ]+$";
     this.controles = {
       nombre: new FormControl(data.nombre, [Validators.required, Validators.minLength(2), Validators.pattern(regEx)]),
@@ -47,10 +52,9 @@ export class EditarProfesorComponent {
       estatus: this.controles.estatus.value
     };
 
-    this.profesorService.editarProfesor(profesor).subscribe((profesor: Profesor) => {
-      this.openSnackBar();
-      this.dialogRef.close();
-    });
+    this.store.dispatch(editarProfesorState({ profesor }));
+    this.dialogRef.close();
+    this.openSnackBar();
   }
 
   openSnackBar() {

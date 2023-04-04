@@ -6,15 +6,13 @@ import { Observable, Subscription } from 'rxjs';
 import { Curso } from 'src/app/models/curso';
 import { Usuario } from 'src/app/models/usuario';
 import { RegistroCorrectoComponent } from 'src/app/shared/components/registro-correcto/registro-correcto.component';
-import { SesionService } from 'src/app/shared/services/sesion.service';
-import { UsuariosService } from 'src/app/shared/services/usuarios.service';
 import { EditarUsuariosComponent } from '../editar-usuarios/editar-usuarios.component';
 import { Store } from '@ngrx/store';
 import { LoginState } from 'src/app/core/components/login/state/login.reducer';
 import { selectSesionState } from 'src/app/core/components/login/state/login.selectors';
 import { UsuarioState } from '../../state/usuarios-state.reducer';
-import { selectCargandoUsuarios } from '../../state/usuarios-state.selectors';
-import { cargarUsuariosState, usuariosCargados } from '../../state/usuarios-state.actions';
+import { selectCargandoUsuarios, selectUsuariosCargados } from '../../state/usuarios-state.selectors';
+import { cargarUsuariosState, eliminarUsuarioState, usuariosCargadosState } from '../../state/usuarios-state.actions';
 
 @Component({
   selector: 'app-lista-usuarios',
@@ -33,10 +31,9 @@ export class ListaUsuariosComponent implements OnInit {
 
   @ViewChild(MatTable) table!: MatTable<Curso>;
 
-  constructor(private usuariosService: UsuariosService,
+  constructor(
     public dialog: MatDialog,
     private _snackBar: MatSnackBar,
-    private sesionService: SesionService,
     private loginStore: Store<LoginState>,
     private store: Store<UsuarioState>) {
     this.usuarios = [];
@@ -45,14 +42,14 @@ export class ListaUsuariosComponent implements OnInit {
   ngOnInit(): void {
     this.puedeEditar = false;
     this.cargando$ = this.store.select(selectCargandoUsuarios);
-    this.usuarios$ = this.usuariosService.obtenerUsuarios();
+
     this.store.dispatch(cargarUsuariosState());
 
-    this.suscription = this.usuarios$.subscribe((usuarios) => {
-      this.dataSource = new MatTableDataSource<Usuario>(usuarios);
-      this.store.dispatch(usuariosCargados({ usuarios: usuarios }));
-      this.usuarios = usuarios;
-    });
+    this.store.select(selectUsuariosCargados).subscribe(
+      (usuarios: Usuario[]) => {
+        this.dataSource = new MatTableDataSource<Usuario>(usuarios);
+        this.usuarios = usuarios;
+      });
 
     this.loginStore.select(selectSesionState).subscribe((sesion) => {
       if (sesion.activa && sesion.usuario?.tipo == "admin") {
@@ -62,31 +59,30 @@ export class ListaUsuariosComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.suscription.unsubscribe;
+
   }
 
   editarUsuario(usuario: Usuario) {
     const dialogRef = this.dialog.open(EditarUsuariosComponent, {
       data: usuario
     }).afterClosed().subscribe(() => {
-      this.usuarios$.subscribe((usuarios) => {
-        this.dataSource = new MatTableDataSource<Usuario>(usuarios);
-        this.usuarios = usuarios;
-        this.table.renderRows();
-      });
-
+      this.store.select(selectUsuariosCargados).subscribe(
+        (usuarios: Usuario[]) => {
+          this.dataSource = new MatTableDataSource<Usuario>(usuarios);
+          this.usuarios = usuarios;
+        });
     });
   }
 
   eliminarUsuario(idUsuario: string) {
-    this.usuariosService.eliminarUsuario(idUsuario).subscribe(() => {
-      this.openSnackBar();
-      this.usuarios$.subscribe((usuarios) => {
+
+    this.store.dispatch(eliminarUsuarioState({ idUsuario }));
+    this.store.select(selectUsuariosCargados).subscribe(
+      (usuarios: Usuario[]) => {
         this.dataSource = new MatTableDataSource<Usuario>(usuarios);
         this.usuarios = usuarios;
-        this.table.renderRows();
       });
-    });
+    this.openSnackBar();
   }
 
   openSnackBar() {

@@ -12,8 +12,8 @@ import { LoginState } from 'src/app/core/components/login/state/login.reducer';
 import { Store } from '@ngrx/store';
 import { selectSesionState } from 'src/app/core/components/login/state/login.selectors';
 import { ProfesorState } from '../../state/profesores-state.reducer';
-import { selectCargandoProfesores } from '../../state/profesores-state.selectors';
-import { cargarProfesoresState, profesoresCargados } from '../../state/profesores-state.actions';
+import { selectCargandoProfesores, selectProfesoresCargados } from '../../state/profesores-state.selectors';
+import { cargarProfesoresState, eliminarProfesorState, profesoresCargadosState } from '../../state/profesores-state.actions';
 
 @Component({
   selector: 'app-lista-profesores',
@@ -35,7 +35,6 @@ export class ListaProfesoresComponent implements OnInit {
   constructor(public dialog: MatDialog,
     private profesorService: ProfesoresService,
     private _snackBar: MatSnackBar,
-    private sesionService: SesionService,
     private store: Store<ProfesorState>,
     private loginStore: Store<LoginState>) {
 
@@ -44,14 +43,14 @@ export class ListaProfesoresComponent implements OnInit {
   ngOnInit(): void {
     this.puedeEditar = false;
     this.cargando$ = this.store.select(selectCargandoProfesores);
-    this.profesores$ = this.profesorService.obtenerProfesores();
+
     this.store.dispatch(cargarProfesoresState());
 
-    this.suscription = this.profesores$.subscribe((profesores) => {
-      this.dataSource = new MatTableDataSource<Profesor>(profesores);
-      this.store.dispatch(profesoresCargados({ profesores: profesores }))
-      this.profesores = profesores;
-    });
+    this.store.select(selectProfesoresCargados).subscribe(
+      (profesores: Profesor[]) => {
+        this.dataSource = new MatTableDataSource<Profesor>(profesores);
+        this.profesores = profesores;
+      });
 
     this.loginStore.select(selectSesionState).subscribe((sesion) => {
       if (sesion.activa && sesion.usuario?.tipo === "admin") {
@@ -61,32 +60,32 @@ export class ListaProfesoresComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.suscription.unsubscribe;
   }
 
-  editarProfesor(alumno: Profesor): void {
+  editarProfesor(profesor: Profesor): void {
     const dialogRef = this.dialog.open(EditarProfesorComponent, {
-      data: alumno
+      data: profesor
     }).afterClosed().subscribe(() => {
-      this.profesores$.subscribe((profesores) => {
-        this.dataSource = new MatTableDataSource<Profesor>(profesores);
-        this.profesores = profesores;
-        this.table.renderRows();
-      });
+      this.store.select(selectProfesoresCargados).subscribe(
+        (profesores: Profesor[]) => {
+          this.dataSource = new MatTableDataSource<Profesor>(profesores);
+          this.profesores = profesores;
+        });
     });
   }
 
   eliminarProfesor(idProfesor: string) {
-    this.profesorService.eliminarProfesor(idProfesor).subscribe((profesor: Profesor) => {
-      this.openSnackBar();
-      this.profesores$ = this.profesorService.obtenerProfesores();
-      this.suscription = this.profesores$.subscribe((profesores) => {
+
+    this.store.dispatch(eliminarProfesorState({ idProfesor }));
+    this.store.select(selectProfesoresCargados).subscribe(
+      (profesores: Profesor[]) => {
         this.dataSource = new MatTableDataSource<Profesor>(profesores);
         this.profesores = profesores;
-        this.table.renderRows();
       });
-    });
+
+    this.openSnackBar();
   }
+
   openSnackBar() {
     this._snackBar.openFromComponent(RegistroCorrectoComponent, {
       duration: this.duracionSnackbar * 1000,

@@ -4,7 +4,9 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Alumno } from 'src/app/models/alumno';
 import { RegistroCorrectoComponent } from 'src/app/shared/components/registro-correcto/registro-correcto.component';
-import { AlumnosService } from 'src/app/shared/services/alumnos.service';
+import { editarAlumnoState } from '../../state/alumnos-state.actions';
+import { AlumnoState } from '../../state/alumnos-state.reducer';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-editar-alumnos',
@@ -20,7 +22,9 @@ export class EditarAlumnosComponent {
 
     private dialogRef: MatDialogRef<EditarAlumnosComponent>,
 
-    @Inject(MAT_DIALOG_DATA) public data: Alumno, private alumnoService: AlumnosService, private _snackBar: MatSnackBar) {
+    @Inject(MAT_DIALOG_DATA) public data: Alumno,
+    private _snackBar: MatSnackBar,
+    private store: Store<AlumnoState>) {
     let regEx: string = "^[a-zA-Z ]+$";
     this.controles = {
       nombre: new FormControl(data.nombre, [Validators.required, Validators.minLength(2), Validators.pattern(regEx)]),
@@ -49,10 +53,9 @@ export class EditarAlumnosComponent {
       cursosInscrito: this.data.cursosInscrito
     };
 
-    this.alumnoService.editarAlumno(alumno).subscribe((alumno: Alumno) => {
-      this.openSnackBar();
-      this.dialogRef.close();
-    });
+    this.store.dispatch(editarAlumnoState({ alumno }));
+    this.dialogRef.close();
+    this.openSnackBar();
   }
 
   openSnackBar() {

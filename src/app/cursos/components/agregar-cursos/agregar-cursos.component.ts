@@ -1,14 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ThemePalette } from '@angular/material/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatTableDataSource } from '@angular/material/table';
-import { map, Observable, Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Curso } from 'src/app/models/curso';
 import { Profesor } from 'src/app/models/profesor';
 import { RegistroCorrectoComponent } from 'src/app/shared/components/registro-correcto/registro-correcto.component';
 import { ProfesoresService } from 'src/app/shared/services/profesores.service';
-import { CursosService } from '../../../shared/services/cursos.service';
+import { CursoState } from '../../state/curso-state.reducer';
+import { Store } from '@ngrx/store';
+import { agregarCursoState } from '../../state/curso-state.actions';
 
 @Component({
   selector: 'app-agregar-cursos',
@@ -25,8 +25,11 @@ export class AgregarCursosComponent implements OnInit, OnDestroy {
 
   formularioAgregarCurso: FormGroup;
   controlers: any;
-  constructor(private cursosService: CursosService, private profesoresService: ProfesoresService, private _snackBar: MatSnackBar) {
-    let regEx: string = "^[a-zA-Z ]+$";
+  constructor(
+    private profesoresService: ProfesoresService,
+    private _snackBar: MatSnackBar,
+    private store: Store<CursoState>) {
+
     this.controlers = {
       nombre: new FormControl("", Validators.required),
       fechaInicio: new FormControl(Date, Validators.required),
@@ -64,7 +67,7 @@ export class AgregarCursosComponent implements OnInit, OnDestroy {
         fechaFin: this.controlers.fechaFin.value,
         profesor: profesor
       }
-      this.cursosService.agregarCurso(curso).subscribe();
+      this.store.dispatch(agregarCursoState({ curso }));
       this.openSnackBar();
       this.formularioAgregarCurso.reset();
     });

@@ -5,7 +5,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, Subscription } from 'rxjs';
 import { Usuario } from 'src/app/models/usuario';
 import { RegistroCorrectoComponent } from 'src/app/shared/components/registro-correcto/registro-correcto.component';
-import { UsuariosService } from 'src/app/shared/services/usuarios.service';
+import { UsuarioState } from '../../state/usuarios-state.reducer';
+import { Store } from '@ngrx/store';
+import { editarUsuarioState } from '../../state/usuarios-state.actions';
 
 @Component({
   selector: 'app-editar-usuarios',
@@ -26,7 +28,7 @@ export class EditarUsuariosComponent {
 
   constructor(private dialogRef: MatDialogRef<EditarUsuariosComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Usuario,
-    private usuariosService: UsuariosService,
+    private store: Store<UsuarioState>,
     private _snackBar: MatSnackBar,
 
   ) {
@@ -56,12 +58,11 @@ export class EditarUsuariosComponent {
       email: this.controlers.email.value,
       password: this.controlers.password.value,
       tipo: this.controlers.tipo.value
-    }
+    };
 
-    this.usuariosService.editarUsuario(usuario).subscribe(() => {
-      this.dialogRef.close();
-      this.openSnackBar();
-    });
+    this.store.dispatch(editarUsuarioState({ usuario }));
+    this.dialogRef.close();
+    this.openSnackBar();
 
   }
 

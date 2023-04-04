@@ -23,7 +23,7 @@ export const reducer = createReducer(
     }
     return nuevoEstado;
   }),
-  on(ProfesorStateActions.profesoresCargados, (state, { profesores }) => {
+  on(ProfesorStateActions.profesoresCargadosState, (state, { profesores }) => {
     const nuevoEstado: ProfesorState = {
       cargando: false,
       profesores: profesores

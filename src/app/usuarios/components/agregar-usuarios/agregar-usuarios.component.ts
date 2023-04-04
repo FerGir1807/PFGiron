@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { TipoUsuario } from 'src/app/models/tipoUsuarioEnum';
 import { Usuario } from 'src/app/models/usuario';
 import { RegistroCorrectoComponent } from 'src/app/shared/components/registro-correcto/registro-correcto.component';
-import { UsuariosService } from 'src/app/shared/services/usuarios.service';
+import { UsuarioState } from '../../state/usuarios-state.reducer';
+import { Store } from '@ngrx/store';
+import { agregarUsuarioState } from '../../state/usuarios-state.actions';
 
 @Component({
   selector: 'app-agregar-usuarios',
@@ -18,7 +19,9 @@ export class AgregarUsuariosComponent {
   duracionSnackbar = 5;
 
   hide: boolean = true;
-  constructor(public dialog: MatDialogModule, private usuariosService: UsuariosService, private _snackBar: MatSnackBar) {
+  constructor(public dialog: MatDialogModule,
+    private store: Store<UsuarioState>,
+    private _snackBar: MatSnackBar) {
 
     let regEx: string = "^[a-zA-Z ]+$";
 
@@ -47,8 +50,9 @@ export class AgregarUsuariosComponent {
       tipo: this.controles.tipo.value
     }
 
-    this.usuariosService.agregarUsuario(usuario).subscribe();
+    this.store.dispatch(agregarUsuarioState({ usuario }));
     this.openSnackBar();
+
     this.formularioRegistroUsuario.reset();
   };
 

@@ -10,6 +10,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditarUsuariosComponent } from './components/editar-usuarios/editar-usuarios.component';
 import { StoreModule } from '@ngrx/store';
 import { reducer, usuariosStateFeatureKey } from './state/usuarios-state.reducer';
+import { UsuariosEffects } from './state/usuarios-state.effects';
+import { EffectsModule } from '@ngrx/effects';
 
 
 @NgModule({
@@ -24,7 +26,8 @@ import { reducer, usuariosStateFeatureKey } from './state/usuarios-state.reducer
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
-    StoreModule.forFeature(usuariosStateFeatureKey, reducer)
+    StoreModule.forFeature(usuariosStateFeatureKey, reducer),
+    EffectsModule.forFeature([UsuariosEffects])
   ],
   providers: [
     UsuariosService

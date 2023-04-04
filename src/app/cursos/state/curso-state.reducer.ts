@@ -23,12 +23,21 @@ export const reducer = createReducer(
     }
     return nuevoEstado;
   }),
-  on(CursoStateActions.cursosCargados, (state, { cursos }) => {
+  on(CursoStateActions.cursosCargadosState, (state, { cursos }) => {
     const nuevoEstado: CursoState = {
       cargando: false,
       cursos: cursos
     }
     return nuevoEstado;
+  }),
+  on(CursoStateActions.agregarCursoState, (state, { curso: Curso }) => {
+    return state;
+  }),
+  on(CursoStateActions.editarCursoState, (state, { curso: Curso }) => {
+    return state;
+  }),
+  on(CursoStateActions.eliminarCursoState, (state, { idCurso: String }) => {
+    return state;
   }),
 
 );

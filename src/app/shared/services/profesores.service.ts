@@ -25,7 +25,7 @@ export class ProfesoresService {
     return this.http.put<Profesor>(`${env.apiUrl}profesores/${profesor.id}`, profesor);
   }
 
-  eliminarProfesor(idProfesor: string): Observable<Profesor> {
+  eliminarProfesor(idProfesor: String): Observable<Profesor> {
     return this.http.delete<Profesor>(`${env.apiUrl}profesores/${idProfesor}`);
   }
 

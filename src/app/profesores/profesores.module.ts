@@ -9,6 +9,8 @@ import { EditarProfesorComponent } from './components/editar-profesor/editar-pro
 import { AgregarProfesorComponent } from './components/agregar-profesor/agregar-profesor.component';
 import { StoreModule } from '@ngrx/store';
 import { profesoresStateFeatureKey, reducer } from './state/profesores-state.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { ProfesoresEffects } from './state/profesores-state.effects';
 
 
 @NgModule({
@@ -23,7 +25,8 @@ import { profesoresStateFeatureKey, reducer } from './state/profesores-state.red
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
-    StoreModule.forFeature(profesoresStateFeatureKey, reducer)
+    StoreModule.forFeature(profesoresStateFeatureKey, reducer),
+    EffectsModule.forFeature([ProfesoresEffects])
   ],
   providers: [
     ProfesoresService

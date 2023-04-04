@@ -23,7 +23,7 @@ export const reducer = createReducer(
     }
     return nuevoEstado;
   }),
-  on(AlumnosStateActions.alumnosCargados, (state, { alumnos }) => {
+  on(AlumnosStateActions.alumnosCargadosState, (state, { alumnos }) => {
     const nuevoEstado: AlumnoState = {
       cargando: false,
       alumnos: alumnos

@@ -4,7 +4,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Alumno } from 'src/app/models/alumno';
 import { RegistroCorrectoComponent } from 'src/app/shared/components/registro-correcto/registro-correcto.component';
-import { AlumnosService } from 'src/app/shared/services/alumnos.service';
+import { agregarAlumnoState } from '../../state/alumnos-state.actions';
+import { AlumnoState } from '../../state/alumnos-state.reducer';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-agregar-alumnos',
@@ -16,7 +18,9 @@ export class AgregarAlumnosComponent {
   controles: any;
   duracionSnackbar = 5;
 
-  constructor(public dialog: MatDialogModule, private alumnoService: AlumnosService, private _snackBar: MatSnackBar) {
+  constructor(public dialog: MatDialogModule,
+    private _snackBar: MatSnackBar,
+    private store: Store<AlumnoState>) {
     let regEx: string = "^[a-zA-Z ]+$";
     this.controles = {
       nombre: new FormControl("", [Validators.required, Validators.minLength(2), Validators.pattern(regEx)]),
@@ -45,7 +49,7 @@ export class AgregarAlumnosComponent {
       cursosInscrito: []
     };
 
-    this.alumnoService.agregarAlumno(alumno).subscribe();
+    this.store.dispatch(agregarAlumnoState({ alumno }));
     this.openSnackBar();
     this.formularioRegistroAlumno.reset()
 

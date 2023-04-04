@@ -11,6 +11,8 @@ import { EditarCursosComponent } from './components/editar-cursos/editar-cursos.
 import { SharedModule } from '../shared/shared.module';
 import { StoreModule } from '@ngrx/store';
 import { cursoStateFeatureKey, reducer } from './state/curso-state.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { CursosEffects } from './state/curso-state.effects';
 
 
 @NgModule({
@@ -27,7 +29,8 @@ import { cursoStateFeatureKey, reducer } from './state/curso-state.reducer';
     MatDatepickerModule,
     MatNativeDateModule,
     SharedModule,
-    StoreModule.forFeature(cursoStateFeatureKey, reducer)
+    StoreModule.forFeature(cursoStateFeatureKey, reducer),
+    EffectsModule.forFeature([CursosEffects])
   ],
   exports: [
     MatDatepickerModule,

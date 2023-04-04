@@ -7,7 +7,9 @@ import { Curso } from 'src/app/models/curso';
 import { Profesor } from 'src/app/models/profesor';
 import { RegistroCorrectoComponent } from 'src/app/shared/components/registro-correcto/registro-correcto.component';
 import { ProfesoresService } from 'src/app/shared/services/profesores.service';
-import { CursosService } from '../../../shared/services/cursos.service';
+import { Store } from '@ngrx/store';
+import { editarCursoState } from '../../state/curso-state.actions';
+import { CursoState } from '../../state/curso-state.reducer';
 
 @Component({
   selector: 'app-editar-cursos',
@@ -25,9 +27,9 @@ export class EditarCursosComponent implements OnInit {
 
   constructor(private dialogRef: MatDialogRef<EditarCursosComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Curso,
-    private cursosService: CursosService,
     private _snackBar: MatSnackBar,
-    private profesoresService: ProfesoresService
+    private profesoresService: ProfesoresService,
+    private store: Store<CursoState>
   ) {
     this.controlers = {
       nombre: new FormControl(data.nombre, Validators.required),
@@ -57,10 +59,10 @@ export class EditarCursosComponent implements OnInit {
         fechaFin: this.controlers.fechaFin.value,
         profesor: profesor
       }
-      this.cursosService.editarCurso(curso).subscribe(() => {
-        this.dialogRef.close();
-        this.openSnackBar();
-      });
+
+      this.store.dispatch(editarCursoState({ curso }));
+      this.dialogRef.close();
+      this.openSnackBar();
     });
   }
 
