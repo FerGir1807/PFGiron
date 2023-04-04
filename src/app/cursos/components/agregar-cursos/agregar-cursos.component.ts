@@ -64,7 +64,6 @@ export class AgregarCursosComponent implements OnInit, OnDestroy {
         fechaFin: this.controlers.fechaFin.value,
         profesor: profesor
       }
-      console.log(curso);
       this.cursosService.agregarCurso(curso).subscribe();
       this.openSnackBar();
       this.formularioAgregarCurso.reset();

@@ -8,6 +8,8 @@ import { AgregarUsuariosComponent } from './components/agregar-usuarios/agregar-
 import { SharedModule } from '../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditarUsuariosComponent } from './components/editar-usuarios/editar-usuarios.component';
+import { StoreModule } from '@ngrx/store';
+import { reducer, usuariosStateFeatureKey } from './state/usuarios-state.reducer';
 
 
 @NgModule({
@@ -21,7 +23,8 @@ import { EditarUsuariosComponent } from './components/editar-usuarios/editar-usu
     UsuariosRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    SharedModule
+    SharedModule,
+    StoreModule.forFeature(usuariosStateFeatureKey, reducer)
   ],
   providers: [
     UsuariosService

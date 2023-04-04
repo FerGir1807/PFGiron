@@ -8,6 +8,12 @@ import { RegistroCorrectoComponent } from 'src/app/shared/components/registro-co
 import { AlumnosService } from 'src/app/shared/services/alumnos.service';
 import { SesionService } from 'src/app/shared/services/sesion.service';
 import { EditarAlumnosComponent } from '../editar-alumnos/editar-alumnos.component';
+import { LoginState } from 'src/app/core/components/login/state/login.reducer';
+import { Store } from '@ngrx/store';
+import { selectSesionState } from 'src/app/core/components/login/state/login.selectors';
+import { AlumnoState } from '../../state/alumnos-state.reducer';
+import { selectCargandoAlumnos } from '../../state/alumnos-state.selectors';
+import { alumnosCargados, cargarAlumosState } from '../../state/alumnos-state.actions';
 
 @Component({
   selector: 'app-lista-alumnos',
@@ -16,8 +22,9 @@ import { EditarAlumnosComponent } from '../editar-alumnos/editar-alumnos.compone
 })
 export class ListaAlumnosComponent implements OnInit, OnDestroy {
 
-  alumnos!: Alumno[];
+  alumnos: Alumno[] = [];
   alumnos$!: Observable<Alumno[]>;
+  cargando$!: Observable<boolean>;
   dataSource!: MatTableDataSource<Alumno>;
   columnas: String[] = ["nombreCompleto", "edad", "genero", "estatus", "acciones"];
   suscription!: Subscription;
@@ -26,19 +33,27 @@ export class ListaAlumnosComponent implements OnInit, OnDestroy {
 
   @ViewChild(MatTable) table!: MatTable<Alumno>;
 
-  constructor(public dialog: MatDialog, private alumnoService: AlumnosService, private _snackBar: MatSnackBar, private sesionService: SesionService) {
-    this.alumnos = [];
+  constructor(public dialog: MatDialog,
+    private alumnoService: AlumnosService,
+    private _snackBar: MatSnackBar,
+    private sesionService: SesionService,
+    private store: Store<AlumnoState>,
+    private loginStore: Store<LoginState>) {
   }
 
   ngOnInit(): void {
     this.puedeEditar = false;
+    this.cargando$ = this.store.select(selectCargandoAlumnos);
     this.alumnos$ = this.alumnoService.obtenerAlumnos();
+    this.store.dispatch(cargarAlumosState());
+
     this.suscription = this.alumnos$.subscribe((alumnos) => {
       this.dataSource = new MatTableDataSource<Alumno>(alumnos);
+      this.store.dispatch(alumnosCargados({ alumnos: alumnos }));
       this.alumnos = alumnos;
     });
-    this.sesionService.obtenerSesion().subscribe((sesion) => {
-      console.log(sesion);
+
+    this.loginStore.select(selectSesionState).subscribe((sesion) => {
       if (sesion.activa && sesion.usuario?.tipo === "admin") {
         this.puedeEditar = true;
       }

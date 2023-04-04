@@ -9,6 +9,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { EditarCursosComponent } from './components/editar-cursos/editar-cursos.component';
 import { SharedModule } from '../shared/shared.module';
+import { StoreModule } from '@ngrx/store';
+import { cursoStateFeatureKey, reducer } from './state/curso-state.reducer';
+
 
 @NgModule({
   declarations: [
@@ -23,7 +26,8 @@ import { SharedModule } from '../shared/shared.module';
     ReactiveFormsModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    SharedModule
+    SharedModule,
+    StoreModule.forFeature(cursoStateFeatureKey, reducer)
   ],
   exports: [
     MatDatepickerModule,

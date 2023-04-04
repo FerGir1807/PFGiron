@@ -7,6 +7,8 @@ import { SharedModule } from '../shared/shared.module';
 import { ListaProfesoresComponent } from './components/lista-profesores/lista-profesores.component';
 import { EditarProfesorComponent } from './components/editar-profesor/editar-profesor.component';
 import { AgregarProfesorComponent } from './components/agregar-profesor/agregar-profesor.component';
+import { StoreModule } from '@ngrx/store';
+import { profesoresStateFeatureKey, reducer } from './state/profesores-state.reducer';
 
 
 @NgModule({
@@ -20,7 +22,8 @@ import { AgregarProfesorComponent } from './components/agregar-profesor/agregar-
     ProfesoresRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    SharedModule
+    SharedModule,
+    StoreModule.forFeature(profesoresStateFeatureKey, reducer)
   ],
   providers: [
     ProfesoresService

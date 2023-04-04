@@ -16,7 +16,7 @@ import { EditarInscripcionAlumnoComponent } from '../editar-inscripcion-alumno/e
   styleUrls: ['./inscripciones-alumnos.component.css']
 })
 export class InscripcionesAlumnosComponent implements OnInit, OnDestroy {
-  @Output() selectedChange: EventEmitter<Inscripcion> = new EventEmitter();
+
   alumnos!: Alumno[];
   alumnos$!: Observable<Alumno[]>;
   suscripcionAlumno!: Subscription;

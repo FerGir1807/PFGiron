@@ -1,36 +1,43 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDrawerMode } from '@angular/material/sidenav';
-import { Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Sesion } from './models/sesion';
 import { SesionService } from './shared/services/sesion.service';
 import { LoginState } from './core/components/login/state/login.reducer';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { selectSesionState } from './core/components/login/state/login.selectors';
+import { cargarSesion } from './core/components/login/state/login.actions';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   title = 'PFGiron';
   mode = new FormControl('push' as MatDrawerMode);
   nombre!: String;
   mensajeBienvenida: String = "";
   sesion$!: Observable<Sesion>;
+  suscripcion$!: Subscription;
 
-  constructor(private sesionService: SesionService, private router: Router, private loginStore: Store<LoginState>, private changeDetectorRef: ChangeDetectorRef) {
+  constructor(private sesionService: SesionService, private router: Router, private activatedRoute: ActivatedRoute, private loginStore: Store<LoginState>) {
 
 
   }
+  ngOnDestroy(): void {
+    this.suscripcion$.unsubscribe();
+  }
+
+
   ngOnInit(): void {
 
-    console.log("ngOnINIT APPCOMPONENT")
     this.sesion$ = this.loginStore.select(selectSesionState);
 
-    this.sesion$.subscribe((sesion) => {
+    this.suscripcion$ = this.sesion$.subscribe((sesion) => {
+
       if (sesion.activa) {
         this.opcionesUser = true;
         this.botonLogin = false;
@@ -42,7 +49,6 @@ export class AppComponent implements OnInit {
         else if (sesion.usuario?.tipo == "admin") {
           this.opcionesUser = true;
         }
-        
       }
     });
   }
@@ -59,8 +65,8 @@ export class AppComponent implements OnInit {
     this.opcionesAdmin = false;
     this.opcionesUser = false;
     this.botonLogin = true;
-    this.sesionService.cerrarSesion(sesion);
     this.router.navigate(["inicio"]);
+    this.loginStore.dispatch(cargarSesion({ sesion }));
   }
 
   obtenerUrlImagen() {

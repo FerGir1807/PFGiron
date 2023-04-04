@@ -7,6 +7,8 @@ import { EditarAlumnosComponent } from './components/editar-alumnos/editar-alumn
 import { SharedModule } from '../shared/shared.module';
 import { AlumnosService } from '../shared/services/alumnos.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { StoreModule } from '@ngrx/store';
+import { alumnosStateFeatureKey, reducer } from './state/alumnos-state.reducer';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AlumnosRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    SharedModule
+    SharedModule,
+    StoreModule.forFeature(alumnosStateFeatureKey, reducer)
   ],
   exports: [
   ],

@@ -15,6 +15,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NombreUsuarioPipe } from './pipes/nombre-usuario.pipe';
 import { NombreProfesorPipe } from './pipes/nombre-profesor.pipe';
 import { NombreAlumnoPipe } from './pipes/nombre-alumno.pipe';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { NombreAlumnoPipe } from './pipes/nombre-alumno.pipe';
     ReactiveFormsModule,
     MatInputModule,
     MatSelectModule,
-    HttpClientModule
+    HttpClientModule,
+    MatProgressSpinnerModule
   ],
   exports: [
     EstatusDirective,
@@ -52,7 +54,8 @@ import { NombreAlumnoPipe } from './pipes/nombre-alumno.pipe';
     HttpClientModule,
     NombreAlumnoPipe,
     NombreProfesorPipe,
-    NombreUsuarioPipe
+    NombreUsuarioPipe,
+    MatProgressSpinnerModule
   ]
 })
 export class SharedModule { }

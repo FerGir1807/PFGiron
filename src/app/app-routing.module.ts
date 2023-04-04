@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { InicioComponent } from './inicio/components/inicio/inicio.component';
+import { AppComponent } from './app.component';
 
 const routes: Routes = [
   { path: 'inicio', component: InicioComponent },
@@ -10,7 +11,7 @@ const routes: Routes = [
   { path: 'login', loadChildren: () => import('./core/components/login/login.module').then((loginModule) => loginModule.LoginModule) },
   { path: 'profesores', loadChildren: () => import('./profesores/profesores.module').then((profesorModule) => profesorModule.ProfesorModule) },
   { path: 'usuarios', loadChildren: () => import('./usuarios/usuarios.module').then((usuarioModule) => usuarioModule.UsuariosModule) },
-  { path: '', redirectTo: 'inicio', pathMatch: 'full' }
+  //{ path: '', redirectTo: 'inicio', pathMatch: 'full' }
 ];
 
 @NgModule({

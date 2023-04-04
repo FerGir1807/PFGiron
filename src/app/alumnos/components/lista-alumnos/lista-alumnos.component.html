@@ -2,7 +2,8 @@
 <div *ngIf="alumnos.length == 0">
     <h4>No existen alumnos registrados, favor de agregar.</h4>
 </div>
-<table mat-table [dataSource]="dataSource" *ngIf="alumnos.length > 0">
+<mat-spinner *ngIf="cargando$ | async"></mat-spinner>
+<table mat-table [dataSource]="dataSource" *ngIf="alumnos.length > 0 && !(cargando$ | async)">
     <ng-container matColumnDef="nombreCompleto">
         <th mat-header-cell *matHeaderCellDef="">Nombre Completo</th>
         <td mat-cell *matCellDef="let alumno">{{alumno | nombreAlumno}}</td>
