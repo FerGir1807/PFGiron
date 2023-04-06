@@ -29,7 +29,6 @@ import { EffectsModule } from '@ngrx/effects';
   ],
   exports: [
   ],
-
   providers: [
     AlumnosService
   ]

@@ -13,7 +13,6 @@ import { reducer, usuariosStateFeatureKey } from './state/usuarios-state.reducer
 import { UsuariosEffects } from './state/usuarios-state.effects';
 import { EffectsModule } from '@ngrx/effects';
 
-
 @NgModule({
   declarations: [
     ListaUsuariosComponent,

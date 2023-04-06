@@ -8,6 +8,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
 describe('Test para AgregarCursosComponent', () => {
   let component: AgregarCursosComponent;
@@ -22,7 +24,8 @@ describe('Test para AgregarCursosComponent', () => {
         MatNativeDateModule,
         SharedModule,
         ReactiveFormsModule,
-        BrowserAnimationsModule]
+        BrowserAnimationsModule,
+        StoreModule.forRoot({}), EffectsModule.forRoot([])]
     })
       .compileComponents();
 

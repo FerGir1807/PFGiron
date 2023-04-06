@@ -23,7 +23,6 @@ export class LoginComponent implements OnDestroy {
   hide: boolean = true;
   suscripcion!: Subscription;
 
-
   constructor(private loginService: LoginService, private router: Router, private loginStore: Store<LoginState>) {
 
     this.controles = {
@@ -35,7 +34,7 @@ export class LoginComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.suscripcion.unsubscribe();
+    //this.suscripcion.unsubscribe();
   }
 
   login() {

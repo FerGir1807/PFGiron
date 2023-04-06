@@ -41,11 +41,12 @@ import { EffectsModule } from '@ngrx/effects';
     LoginModule,
     StoreModule.forRoot({}, {}),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
-    EffectsModule.forRoot([])
+    EffectsModule.forRoot([]),
   ],
   exports: [
     MatSidenavModule,
-    MatRadioModule
+    MatRadioModule,
+    MatMenuModule
   ],
   providers: [
 

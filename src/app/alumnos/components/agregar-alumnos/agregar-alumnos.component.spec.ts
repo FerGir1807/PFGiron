@@ -3,13 +3,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AgregarAlumnosComponent } from './agregar-alumnos.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { HttpClientModule } from '@angular/common/http';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
 describe('AgregarAlumnosComponent', () => {
   let component: AgregarAlumnosComponent;
@@ -27,7 +28,8 @@ describe('AgregarAlumnosComponent', () => {
         MatSlideToggleModule,
         SharedModule,
         ReactiveFormsModule,
-        BrowserAnimationsModule],
+        BrowserAnimationsModule,
+        StoreModule.forRoot({}), EffectsModule.forRoot([])],
       providers: []
     })
       .compileComponents();

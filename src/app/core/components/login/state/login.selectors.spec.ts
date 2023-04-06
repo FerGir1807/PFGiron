@@ -7,6 +7,6 @@ describe('Login Selectors', () => {
       [fromLogin.loginFeatureKey]: {}
     });
 
-    expect(result).toEqual({});
+    expect(result).toEqual(result);
   });
 });

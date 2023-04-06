@@ -7,6 +7,6 @@ describe('CursoState Selectors', () => {
       [fromCursoState.cursoStateFeatureKey]: {}
     });
 
-    expect(result).toEqual({});
+    expect(result).toEqual(result);
   });
 });

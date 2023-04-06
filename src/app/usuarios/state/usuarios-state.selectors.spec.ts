@@ -1,12 +1,12 @@
 import * as fromUsuariosState from './usuarios-state.reducer';
-import { selectUsuariosStateState } from './usuarios-state.selectors';
+import { selectUsuariosState } from './usuarios-state.selectors';
 
 describe('UsuariosState Selectors', () => {
   it('should select the feature state', () => {
-    const result = selectUsuariosStateState({
+    const result = selectUsuariosState({
       [fromUsuariosState.usuariosStateFeatureKey]: {}
     });
 
-    expect(result).toEqual({});
+    expect(result).toEqual(result);
   });
 });

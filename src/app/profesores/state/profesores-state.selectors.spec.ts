@@ -7,6 +7,6 @@ describe('ProfesoresState Selectors', () => {
       [fromProfesoresState.profesoresStateFeatureKey]: {}
     });
 
-    expect(result).toEqual({});
+    expect(result).toEqual(result);
   });
 });

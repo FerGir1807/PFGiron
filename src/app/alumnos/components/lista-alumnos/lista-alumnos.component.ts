@@ -37,6 +37,15 @@ export class ListaAlumnosComponent implements OnInit, OnDestroy {
     private loginStore: Store<LoginState>) {
   }
 
+  test(): Alumno[] {
+    let listaAlumnos: Alumno[] = [];
+    this.store.select(selectAlumnosCargados).subscribe(
+      (alumnos: Alumno[]) => {
+
+        listaAlumnos = alumnos;
+      });
+    return listaAlumnos;
+  }
   ngOnInit(): void {
     this.puedeEditar = false;
 

@@ -7,6 +7,8 @@ import { CursosService } from 'src/app/shared/services/cursos.service';
 import { SharedModule } from 'src/app/shared/shared.module';
 
 import { InscripcionesAlumnosComponent } from './inscripciones-alumnos.component';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
 describe('InscripcionesAlumnosComponent', () => {
   let component: InscripcionesAlumnosComponent;
@@ -20,7 +22,8 @@ describe('InscripcionesAlumnosComponent', () => {
         HttpClientModule,
         SharedModule,
         ReactiveFormsModule,
-        BrowserAnimationsModule],
+        BrowserAnimationsModule,
+        StoreModule.forRoot({}), EffectsModule.forRoot([])],
       providers: [CursosService]
     })
       .compileComponents();

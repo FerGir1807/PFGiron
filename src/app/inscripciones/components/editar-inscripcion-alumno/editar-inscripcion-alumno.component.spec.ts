@@ -8,6 +8,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
 describe('EditarInscripcionAlumnoComponent', () => {
   let component: EditarInscripcionAlumnoComponent;
@@ -21,7 +23,9 @@ describe('EditarInscripcionAlumnoComponent', () => {
         SharedModule,
         ReactiveFormsModule,
         BrowserAnimationsModule,
-        DragDropModule
+        DragDropModule,
+        StoreModule.forRoot({}), 
+        EffectsModule.forRoot([])
       ],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: {} },

@@ -16,6 +16,16 @@ import { NombreUsuarioPipe } from './pipes/nombre-usuario.pipe';
 import { NombreProfesorPipe } from './pipes/nombre-profesor.pipe';
 import { NombreAlumnoPipe } from './pipes/nombre-alumno.pipe';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { AlumnosEffects } from '../alumnos/state/alumnos-state.effects';
+import { alumnosStateFeatureKey, alumnoReducer } from '../alumnos/state/alumnos-state.reducer';
+import { CursosEffects } from '../cursos/state/curso-state.effects';
+import { cursoStateFeatureKey, cursoReducer } from '../cursos/state/curso-state.reducer';
+import { ProfesoresEffects } from '../profesores/state/profesores-state.effects';
+import { profesoresStateFeatureKey, reducer } from '../profesores/state/profesores-state.reducer';
+import { UsuariosEffects } from '../usuarios/state/usuarios-state.effects';
+import { usuariosStateFeatureKey } from '../usuarios/state/usuarios-state.reducer';
 
 @NgModule({
   declarations: [
@@ -38,7 +48,15 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatInputModule,
     MatSelectModule,
     HttpClientModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    StoreModule.forFeature(alumnosStateFeatureKey, alumnoReducer),
+    EffectsModule.forFeature([AlumnosEffects]),
+    StoreModule.forFeature(cursoStateFeatureKey, cursoReducer),
+    EffectsModule.forFeature([CursosEffects]),
+    StoreModule.forFeature(profesoresStateFeatureKey, reducer),
+    EffectsModule.forFeature([ProfesoresEffects]),
+    StoreModule.forFeature(usuariosStateFeatureKey, reducer),
+    EffectsModule.forFeature([UsuariosEffects])
   ],
   exports: [
     EstatusDirective,
@@ -55,7 +73,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     NombreAlumnoPipe,
     NombreProfesorPipe,
     NombreUsuarioPipe,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
   ]
 })
 export class SharedModule { }
