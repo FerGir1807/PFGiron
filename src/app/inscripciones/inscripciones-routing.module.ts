@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { EditarInscripcionAlumnoComponent } from './components/editar-inscripcion-alumno/editar-inscripcion-alumno.component';
 import { InscripcionesAlumnosComponent } from './components/inscripciones-alumnos/inscripciones-alumnos.component';
+import { SesionGuard } from '../core/guards/sesion.guard';
 
 const routes: Routes = [
   {
-    path: "", children: [
+    path: "", canActivateChild: [SesionGuard], children: [
       {
         path: "inscripcionAlumno", component: InscripcionesAlumnosComponent
       },

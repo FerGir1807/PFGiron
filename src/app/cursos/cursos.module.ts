@@ -10,7 +10,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { EditarCursosComponent } from './components/editar-cursos/editar-cursos.component';
 import { SharedModule } from '../shared/shared.module';
 import { StoreModule } from '@ngrx/store';
-import { cursoStateFeatureKey, reducer } from './state/curso-state.reducer';
+import { cursoStateFeatureKey, cursoReducer } from './state/curso-state.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { CursosEffects } from './state/curso-state.effects';
 
@@ -29,7 +29,7 @@ import { CursosEffects } from './state/curso-state.effects';
     MatDatepickerModule,
     MatNativeDateModule,
     SharedModule,
-    StoreModule.forFeature(cursoStateFeatureKey, reducer),
+    StoreModule.forFeature(cursoStateFeatureKey, cursoReducer),
     EffectsModule.forFeature([CursosEffects])
   ],
   exports: [

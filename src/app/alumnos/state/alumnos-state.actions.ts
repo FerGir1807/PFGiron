@@ -2,7 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { Alumno } from 'src/app/models/alumno';
 
 export const cargarAlumosState = createAction(
-  '[AlumnosState] Cargar Alumos'
+  '[AlumnosState] Cargar Alumnos'
 );
 
 export const alumnosCargadosState = createAction(

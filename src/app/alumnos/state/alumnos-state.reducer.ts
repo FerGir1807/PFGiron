@@ -14,7 +14,7 @@ export const initialState: AlumnoState = {
   alumnos: []
 };
 
-export const reducer = createReducer(
+export const alumnoReducer = createReducer(
   initialState,
   on(AlumnosStateActions.cargarAlumosState, (state) => {
     const nuevoEstado: AlumnoState = {
@@ -34,6 +34,6 @@ export const reducer = createReducer(
 
 export const alumnosStateFeature = createFeature({
   name: alumnosStateFeatureKey,
-  reducer,
+  reducer: alumnoReducer,
 });
 

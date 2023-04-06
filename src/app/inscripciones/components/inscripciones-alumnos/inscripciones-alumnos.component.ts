@@ -9,6 +9,13 @@ import { NombreAlumnoPipe } from 'src/app/shared/pipes/nombre-alumno.pipe';
 import { AlumnosService } from 'src/app/shared/services/alumnos.service';
 import { CursosService } from 'src/app/shared/services/cursos.service';
 import { EditarInscripcionAlumnoComponent } from '../editar-inscripcion-alumno/editar-inscripcion-alumno.component';
+import { AlumnoState } from 'src/app/alumnos/state/alumnos-state.reducer';
+import { Store } from '@ngrx/store';
+import { cargarAlumosState } from 'src/app/alumnos/state/alumnos-state.actions';
+import { selectAlumnosCargados, selectCargandoAlumnos } from 'src/app/alumnos/state/alumnos-state.selectors';
+import { CursoState } from 'src/app/cursos/state/curso-state.reducer';
+import { selectCargandoCursos, selectCursosCargados } from 'src/app/cursos/state/curso-state.selectors';
+import { cargarCursoState } from 'src/app/cursos/state/curso-state.actions';
 
 @Component({
   selector: 'app-inscripciones-alumnos',
@@ -17,71 +24,68 @@ import { EditarInscripcionAlumnoComponent } from '../editar-inscripcion-alumno/e
 })
 export class InscripcionesAlumnosComponent implements OnInit, OnDestroy {
 
-  alumnos!: Alumno[];
+  nombreAlumnoPipe = new NombreAlumnoPipe();
+  cargandoCursos$!: Observable<boolean>;
+  cargandoAlumnos$!: Observable<boolean>;
+
+
+  alumnos: Alumno[] = [];
   alumnos$!: Observable<Alumno[]>;
   suscripcionAlumno!: Subscription;
 
-  cursos!: Curso[];
+  cursos: Curso[] = [];
   cursos$!: Observable<Curso[]>;
   suscripcionCursos!: Subscription;
 
-  inscripciones!: Inscripcion[];
+  inscripciones: Inscripcion[] = [];
 
   columnas: String[] = ["nombreCompleto", "cursosInscrito", "acciones"];
   dataSource!: MatTableDataSource<Inscripcion>;
 
-  @ViewChild(MatTable) table!: MatTable<Alumno>;
+  constructor(    public dialog: MatDialog,
+    private alumnoStore: Store<AlumnoState>,
+    private cursoStore: Store<CursoState>) {
 
-  constructor(private alumnoService: AlumnosService, private cursosService: CursosService, public dialog: MatDialog) {
-    this.inscripciones = [];
-    this.alumnos = [];
-    this.cursos = [];
   }
 
   ngOnInit(): void {
 
-    let nombreAlumnoPipe = new NombreAlumnoPipe();
-    this.inscripciones = [];
+    this.cargandoCursos$ = this.cursoStore.select(selectCargandoCursos);
+    this.cargandoAlumnos$ = this.alumnoStore.select(selectCargandoAlumnos);
 
-    this.alumnos$ = this.alumnoService.obtenerAlumnos();
-    this.suscripcionAlumno = this.alumnos$.subscribe((alumnos) => {
+    this.alumnoStore.dispatch(cargarAlumosState());
 
-      this.inscripciones = [];
-      this.alumnos = alumnos;
-      this.alumnos.map(alumno => {
-        let inscripcion: Inscripcion = {
-          idAlumno: alumno.id,
-          nombreAlumno: nombreAlumnoPipe.transform(alumno),
-          cursosInscrito: alumno.cursosInscrito
-        };
-        this.inscripciones.push(inscripcion);
+    this.alumnoStore.select(selectAlumnosCargados).subscribe(
+      (alumnos: Alumno[]) => {
+        this.inscripciones = [];
+        this.alumnos = alumnos;
+        this.alumnos.map(alumno => {
+          let inscripcion: Inscripcion = {
+            idAlumno: alumno.id,
+            nombreAlumno: this.nombreAlumnoPipe.transform(alumno),
+            cursosInscrito: alumno.cursosInscrito
+          };
+          this.inscripciones.push(inscripcion);
+        });
+        this.dataSource = new MatTableDataSource<Inscripcion>(this.inscripciones);
       });
-      this.dataSource = new MatTableDataSource<Inscripcion>(this.inscripciones);
-    });
 
-    this.cursos$ = this.cursosService.obtenerCursos();
-    this.suscripcionCursos = this.cursos$.subscribe((cursos) => {
-      this.cursos = cursos;
-    });
+    this.cursoStore.dispatch(cargarCursoState());
+
+    this.cursoStore.select(selectCursosCargados).subscribe(
+      (cursos: Curso[]) => {
+        this.cursos = cursos;
+      });
   }
 
   ngOnDestroy(): void {
-    this.suscripcionAlumno.unsubscribe;
-    this.suscripcionCursos.unsubscribe;
   }
 
   editarInscripcion(inscripcion: Inscripcion) {
     const dialogRef = this.dialog.open(EditarInscripcionAlumnoComponent, {
       data: inscripcion
     }).afterClosed().subscribe(() => {
-
-      this.cursos$ = this.cursosService.obtenerCursos();
-      this.suscripcionCursos = this.cursos$.subscribe((cursos) => {
-        this.cursos = cursos;
-        this.ngOnInit();
-        this.table.renderRows();
-      });
-
+      this.alumnoStore.dispatch(cargarAlumosState());
     });
   }
 }

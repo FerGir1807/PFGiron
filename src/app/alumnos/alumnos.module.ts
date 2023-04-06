@@ -8,7 +8,7 @@ import { SharedModule } from '../shared/shared.module';
 import { AlumnosService } from '../shared/services/alumnos.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
-import { alumnosStateFeatureKey, reducer } from './state/alumnos-state.reducer';
+import { alumnosStateFeatureKey, alumnoReducer } from './state/alumnos-state.reducer';
 import { AlumnosEffects } from './state/alumnos-state.effects';
 import { EffectsModule } from '@ngrx/effects';
 
@@ -24,7 +24,7 @@ import { EffectsModule } from '@ngrx/effects';
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
-    StoreModule.forFeature(alumnosStateFeatureKey, reducer),
+    StoreModule.forFeature(alumnosStateFeatureKey, alumnoReducer),
     EffectsModule.forFeature([AlumnosEffects])
   ],
   exports: [

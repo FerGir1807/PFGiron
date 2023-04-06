@@ -5,10 +5,12 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { CursosService } from 'src/app/shared/services/cursos.service';
 import { AlumnosService } from 'src/app/shared/services/alumnos.service';
 import { Curso } from 'src/app/models/curso';
-import { map, Observable, Subscription } from 'rxjs';
-import { InscripcionesAlumnosComponent } from '../inscripciones-alumnos/inscripciones-alumnos.component';
+import { Observable, Subscription } from 'rxjs';
 import { RegistroCorrectoComponent } from 'src/app/shared/components/registro-correcto/registro-correcto.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AlumnoState } from 'src/app/alumnos/state/alumnos-state.reducer';
+import { Store } from '@ngrx/store';
+import { editarAlumnoState } from 'src/app/alumnos/state/alumnos-state.actions';
 
 @Component({
   selector: 'app-editar-inscripcion-alumno',
@@ -29,6 +31,7 @@ export class EditarInscripcionAlumnoComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: Inscripcion,
     private cursosService: CursosService,
     private alumnoService: AlumnosService,
+    private alumnoStore: Store<AlumnoState>,
     private _snackBar: MatSnackBar) {
 
   }
@@ -52,7 +55,8 @@ export class EditarInscripcionAlumnoComponent implements OnInit {
 
     this.alumnoService.obtenerDetalleAlumno(this.data.idAlumno).subscribe((alumno) => {
       alumno.cursosInscrito = this.cursosInscrito;
-      this.alumnoService.editarAlumno(alumno).subscribe();
+
+      this.alumnoStore.dispatch(editarAlumnoState({ alumno }));
       this.dialogRef.close();
       this.openSnackBar();
     })
