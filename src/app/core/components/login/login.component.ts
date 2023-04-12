@@ -34,10 +34,11 @@ export class LoginComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    //this.suscripcion.unsubscribe();
   }
 
   login() {
+
+    //usuario: fer@fer.com password: fer
     let usuario: Usuario = {
       id: "",
       nombre: "",
